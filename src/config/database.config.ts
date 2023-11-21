@@ -10,7 +10,8 @@ import {
   MailJob,
   MailLog,
   LatestBlock,
-  Config
+  Config,
+  Collection
 } from '../database/entities';
 
 export const databaseConfig: ConnectionOptions = {
@@ -31,7 +32,8 @@ export const databaseConfig: ConnectionOptions = {
     User,
     Admin,
     LatestBlock,
-    Config
+    Config,
+    Collection
   ],
   synchronize: true,
 };

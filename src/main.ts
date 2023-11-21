@@ -6,10 +6,12 @@ import { AppWorkerModule } from "./app-worker.module";
 import { debugLog, logger } from "./shared/logger";
 import * as fs from "fs";
 import { ValidationPipe } from "@nestjs/common";
-import { ExpressAdapter } from "@nestjs/platform-express";
+import { ExpressAdapter, NestExpressApplication } from "@nestjs/platform-express";
 import * as http from "http";
 import * as https from "https";
 import * as bodyParser from "body-parser";
+import * as path from "path";
+
 const express = require("express");
 
 async function bootstrap() {
@@ -32,7 +34,7 @@ async function bootstrap() {
       debugLog(`NODE_ENV set to dev-api`);
     }
     const server = express();
-    app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+    app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(server));
 
     const options = new DocumentBuilder()
       .setTitle("Launchpad APIs")
@@ -61,6 +63,7 @@ async function bootstrap() {
     app.use(logger);
     app.enableCors();
     app.useGlobalPipes(new ValidationPipe());
+    app.useStaticAssets(path.join(__dirname, "../uploads"));
 
     await app.init();
 
