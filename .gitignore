@@ -152,3 +152,5 @@ test-results
 my-db/
 
 sslcert/
+
+uploads/
