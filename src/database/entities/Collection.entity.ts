@@ -25,6 +25,12 @@ export class Collection {
   @Column({ name: 'fileName', type: 'varchar', length: 80})
   fileName: string;
 
+  @Column({ name: 'ipfsMetadataToken', type: 'varchar', length: 80})
+  ipfsMetadataToken: string;
+
+  @Column({ name: 'ipfsMetadataUrl', type: 'varchar', length: 255})
+  ipfsMetadataUrl: string;
+
   @Column({ name: 'created_at', type: 'bigint', nullable: true })
   createdAt: number;
 

@@ -6,6 +6,10 @@ import { Collection } from "src/database/entities";
 import { getArrayPagination } from "src/shared/Utils";
 import { Raw, Repository } from "typeorm";
 import { CollectionType } from "./request/type.dto";
+import { NFTStorage, File as NFTFile } from "nft.storage";
+import path, { join } from "path";
+import mime from 'mime'
+import fs from 'fs'
 
 @Injectable()
 export class CollectionService {
@@ -15,11 +19,37 @@ export class CollectionService {
   ) {}
 
   async createCollection(collection: any): Promise<any> {
-    const newCollection = this.collectionsRepository.create(collection);
+    const fileName = collection.fileName
+    const filePath = join(process.cwd(), '/uploads', fileName)
+    const result = await this.storeNFT(filePath, collection.name, collection.description);
+    const newCollection = this.collectionsRepository.create({ ...collection, ipfsMetadataToken: result.ipnft, ipfsMetadataUrl: result.url });
     const savedCollection = await this.collectionsRepository.save(
       newCollection
     );
     return savedCollection;
+  }
+
+  async storeNFT(imagePath, name, description): Promise<any> {
+    // load the file from disk
+    const image = await this.fileFromPath(imagePath)
+
+    // create a new NFTStorage client using our API key
+
+    const nftstorage = new NFTStorage({ token: process.env.NFT_STORAGE_TOKEN })
+
+    // call client.store, passing in the image & metadata
+    return nftstorage.store({
+      image,
+      name,
+      description,
+    })
+  }
+
+
+  async fileFromPath(filePath): Promise<any> {
+    const content = await fs.promises.readFile(filePath)
+    const type = mime.getType(filePath)
+    return new NFTFile([content], path.basename(filePath), { type })
   }
 
   async findAll(): Promise<Collection[]> {

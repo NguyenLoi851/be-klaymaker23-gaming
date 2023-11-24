@@ -130,7 +130,7 @@ export class CollectionController {
     required: false,
     type: Number,
   })
-  async getAllWalletsDeposits(
+  async getAllCollection(
     @Query("creator") creator: string,
     @Query("type") type: CollectionType,
     @Query("page", new DefaultValuePipe(1)) page: string,

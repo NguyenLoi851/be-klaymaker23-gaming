@@ -76,8 +76,8 @@ async function bootstrap() {
       const httpsOptions = { key: privateKey, cert: certificate };
       https
         .createServer(httpsOptions, server)
-        .listen(process.env.HTTPS_PORT || 443);
-      debugLog(`Application is running on: ${process.env.HTTPS_PORT || 443}`);
+        .listen(process.env.HTTPS_PORT || 3002);
+      debugLog(`Application is running on: ${process.env.HTTPS_PORT || 3002}`);
     }
   }
 }
