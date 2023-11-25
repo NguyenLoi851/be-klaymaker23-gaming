@@ -118,7 +118,7 @@ export class CollectionController {
   @ApiQuery({
     name: "type",
     required: false,
-    enum: CollectionType,
+    enum: [CollectionType.Skin, CollectionType.Weapon, CollectionType.Map, CollectionType.World],
   })
   @ApiQuery({
     name: "page",
